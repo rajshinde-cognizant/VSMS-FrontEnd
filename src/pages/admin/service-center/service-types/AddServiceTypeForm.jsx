@@ -35,7 +35,7 @@ const AddServiceTypeForm = ({ onServiceTypeAdded, serviceCenterId }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+    <div className="bg-white p-6 mb-6">
       <h2 className="text-xl font-semibold mb-4">Add New Service Type</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <p className="text-red-500">{error}</p>}

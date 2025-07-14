@@ -1,26 +1,28 @@
 // src/components/service-center/ServiceCenterList.jsx
-import React, { useEffect, useState } from 'react';
-import api from '../../../api/axios';
-import ServiceCenterDetails from './ServiceCenterDetails';
+import React, { useEffect, useState } from "react";
+import api from "../../../api/axios";
+import ServiceCenterDetails from "./ServiceCenterDetails";
 
 const ServiceCenterList = ({ refreshTrigger }) => {
   const [serviceCenters, setServiceCenters] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [selectedServiceCenterId, setSelectedServiceCenterId] = useState(null);
 
   const fetchServiceCenters = async () => {
     setLoading(true);
-    setError('');
+    setError("");
     try {
-      const response = await api.get('/service-centers');
+      const response = await api.get("/service-centers");
       setServiceCenters(response.data);
     } catch (err) {
-      console.error('Error fetching service centers:', err);
+      console.error("Error fetching service centers:", err);
       if (err.response && err.response.status === 401) {
-        setError('Authentication required to list service centers. Please log in.');
+        setError(
+          "Authentication required to list service centers. Please log in."
+        );
       } else {
-        setError('Failed to load service centers.');
+        setError("Failed to load service centers.");
       }
     } finally {
       setLoading(false);
@@ -31,40 +33,55 @@ const ServiceCenterList = ({ refreshTrigger }) => {
     fetchServiceCenters();
   }, [refreshTrigger]); // Re-fetch when refreshTrigger changes
 
-  const handleViewDetails = (id) => {
+  const handleManageCenter = (id) => {
+    // Renamed handler
     setSelectedServiceCenterId(id);
   };
 
   const handleCloseDetails = () => {
     setSelectedServiceCenterId(null);
+    fetchServiceCenters(); // Refresh list after closing details (in case of updates)
   };
 
   if (loading) return <p>Loading service centers...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">All Service Centers</h2>
+    <div className="bg-white p-6">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">All Service Centers</h2>
       {serviceCenters.length === 0 ? (
-        <p>No service centers found.</p>
+        <p className="text-gray-600">No service centers found.</p>
       ) : (
-        <ul className="space-y-3">
-          {serviceCenters.map((center) => (
-            <li key={center.id} className="border p-4 rounded-md flex justify-between items-center">
-              <div>
-                <p className="font-medium">{center.name}</p>
-                {/* Updated display field */}
-                <p className="text-sm text-gray-600">{center.location}</p>
-              </div>
-              <button
-                onClick={() => handleViewDetails(center.id)}
-                className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        <table className="w-full border-collapse rounded-lg overflow-hidden shadow-lg">
+          <thead>
+            <tr className="bg-blue-500 text-white">
+              <th className="px-6 py-3 text-left font-medium">Name</th>
+              <th className="px-6 py-3 text-left font-medium">Location</th>
+              <th className="px-6 py-3 text-center font-medium">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {serviceCenters.map((center, index) => (
+              <tr
+                key={center.id}
+                className={`${
+                  index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                } hover:bg-gray-200 transition-colors`}
               >
-                View Details
-              </button>
-            </li>
-          ))}
-        </ul>
+                <td className="px-6 py-4 text-gray-800">{center.name}</td>
+                <td className="px-6 py-4 text-gray-600">{center.location}</td>
+                <td className="px-6 py-4 text-center">
+                  <button
+                    onClick={() => handleManageCenter(center.id)}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 mx-auto"
+                  >
+                    Manage Center
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
 
       {selectedServiceCenterId && (
