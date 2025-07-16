@@ -13,11 +13,6 @@ const AddServiceTypeForm = ({ onServiceTypeAdded, serviceCenterId }) => {
     setError('');
     setSuccess('');
     try {
-      // The token is now automatically attached by the Axios interceptor in api.js
-      // IMPORTANT: As discussed, your backend's addServiceType expects a serviceCenterId.
-      // For a standalone form, you'd need a selection mechanism or modify the backend for global service types.
-      // Using a dummy ID for demonstration. Replace with actual logic.
-       // **Replace with actual logic to select a service center**
 
       const response = await api.post(`/service-centers/${serviceCenterId}/service-types`, { description, price: parseFloat(price) }); // Updated fields, ensured price is number
       setSuccess(`Service type "${response.data.description}" added successfully!`);

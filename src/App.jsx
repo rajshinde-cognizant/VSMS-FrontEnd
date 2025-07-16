@@ -9,8 +9,6 @@ import Register from './auth/Register';
 import UserDashboard from './pages/user/UserDashboard';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import Unauthorized from './pages/common/Unauthorized';
-import UserProfile from './pages/user/UserProfile';
-// import NotFound from './pages/common/NotFound';
  
 function Layout() {
   return (
@@ -59,21 +57,6 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             {/* Other admin pages go here */}
           </Route>
-
-          {/* <Route path="/user/profile"
-              element={
-                <ProtectedRoute role="CUSTOMER">
-                  <Layout/>
-                </ProtectedRoute>
-              }
-            >
-                <Route index element={<UserProfile/>}></Route>
-            </Route> */}
- 
-          {/* Catch-all 404 */}
-          {/* <Route element={<Layout />}>
-            <Route path="*" element={<NotFound />} />
-          </Route> */}
         </Routes>
       </BrowserRouter>
     </AuthProvider>

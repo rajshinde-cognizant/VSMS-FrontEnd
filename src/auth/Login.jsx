@@ -23,9 +23,6 @@ const Login = () => {
       const payload = jwtDecode(token);
       console.log("JWT Payload:", payload); // IMPORTANT: Inspect this to find the actual user ID claim
 
-      // Attempt to get userId from 'sub' claim.
-      // If your backend puts the actual database ID of the user in a different claim (e.g., 'userId'),
-      // replace `payload.sub` with `payload.userId` or whatever it's named.
       const userId = payload.sub; // Assuming 'sub' claim holds the numeric user ID
 
       if (!userId) {
